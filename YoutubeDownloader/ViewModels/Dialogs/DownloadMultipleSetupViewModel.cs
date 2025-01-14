@@ -74,15 +74,22 @@ public partial class DownloadMultipleSetupViewModel(
             WritePlaylistMeta(dirPath);
         }
 
+        bool IsPlaylist = Title == null ? false : Title.ToString().ToLower().Contains("playlist");
+
         var downloads = new List<DownloadViewModel>();
         for (var i = 0; i < SelectedVideos.Count; i++)
         {
             var video = SelectedVideos[i];
 
+            string strFileNameTemplate =
+                IsPlaylist && settingsService.ShouldAddSequenceNumber
+                    ? "$num-$title"
+                    : settingsService.FileNameTemplate;
+
             var baseFilePath = Path.Combine(
                 dirPath,
                 FileNameTemplate.Apply(
-                    settingsService.FileNameTemplate,
+                    strFileNameTemplate,
                     video,
                     SelectedContainer,
                     (i + 1).ToString().PadLeft(SelectedVideos.Count.ToString().Length, '0')
