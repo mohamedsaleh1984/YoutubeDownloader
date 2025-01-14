@@ -76,6 +76,12 @@ public class SettingsViewModel : DialogViewModelBase
         set => _settingsService.ParallelLimit = Math.Clamp(value, 1, 10);
     }
 
+    public bool ShouldGeneratePlaylistMeta
+    {
+        get => _settingsService.ShouldGeneratePlaylistMeta;
+        set => _settingsService.ShouldGeneratePlaylistMeta = value;
+    }
+
     protected override void Dispose(bool disposing)
     {
         if (disposing)

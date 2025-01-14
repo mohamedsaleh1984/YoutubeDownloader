@@ -125,6 +125,13 @@ public partial class SettingsService()
 
         LastAuthCookies = lastAuthCookies;
     }
+
+    private bool _shouldGeneratePlaylistMeta = true;
+    public bool ShouldGeneratePlaylistMeta
+    {
+        get => _shouldGeneratePlaylistMeta;
+        set => SetProperty(ref _shouldGeneratePlaylistMeta, value);
+    }
 }
 
 public partial class SettingsService

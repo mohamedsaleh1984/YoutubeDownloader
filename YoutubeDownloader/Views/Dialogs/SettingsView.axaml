@@ -159,6 +159,21 @@
                                 Value="{Binding ParallelLimit}" />
                         </StackPanel>
                     </DockPanel>
+
+                     <!--  Playlist Meta  -->
+                    <DockPanel
+                        Margin="16,8"
+                        IsVisible="{OnPlatform False,
+                                               Windows=True}"
+                        LastChildFill="False">
+                        <ToolTip.Tip>
+                            <TextBlock>
+                                <Run Text="Generate Playlist Meta" />
+                            </TextBlock>
+                        </ToolTip.Tip>
+                        <TextBlock DockPanel.Dock="Left" Text="Generate Playlist Meta" />
+                        <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding ShouldGeneratePlaylistMeta}" />
+                    </DockPanel>
                 </StackPanel>
             </ScrollViewer>
         </Border>

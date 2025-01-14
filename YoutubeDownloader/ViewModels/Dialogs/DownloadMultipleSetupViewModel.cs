@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -68,6 +69,11 @@ public partial class DownloadMultipleSetupViewModel(
         if (string.IsNullOrWhiteSpace(dirPath))
             return;
 
+        if (settingsService.ShouldGeneratePlaylistMeta)
+        {
+            WritePlaylistMeta(dirPath);
+        }
+
         var downloads = new List<DownloadViewModel>();
         for (var i = 0; i < SelectedVideos.Count; i++)
         {
@@ -105,5 +111,33 @@ public partial class DownloadMultipleSetupViewModel(
         settingsService.LastVideoQualityPreference = SelectedVideoQualityPreference;
 
         Close(downloads);
+    }
+
+    private void WritePlaylistMeta(string dirPath)
+    {
+        string strFileName = "PlaylistInfo.txt";
+        string strFilePath = Path.Combine(dirPath, strFileName);
+        if (File.Exists(strFilePath))
+            File.Delete(strFilePath);
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine(Title == null ? "Playlist: NA" : Title.ToString());
+        sb.AppendLine("Videos List: ");
+        List<IVideo> vidList = new List<IVideo>();
+        if (AvailableVideos != null)
+        {
+            vidList.AddRange(AvailableVideos);
+        }
+
+        TimeSpan totalDuration = TimeSpan.FromSeconds(0);
+        foreach (var item in vidList)
+        {
+            sb.AppendLine(item.ToString());
+
+            if (item.Duration != null)
+                totalDuration += (TimeSpan)item.Duration;
+        }
+        sb.AppendLine();
+        sb.AppendLine("Playlist Duration: " + totalDuration.ToString());
+        File.WriteAllText(strFilePath, sb.ToString());
     }
 }
