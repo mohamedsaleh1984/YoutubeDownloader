@@ -82,6 +82,11 @@ public class SettingsViewModel : DialogViewModelBase
         set => _settingsService.ShouldGeneratePlaylistMeta = value;
     }
 
+    public bool ShouldAddSequenceNumber
+    {
+        get => _settingsService.ShouldAddSequenceNumber;
+        set => _settingsService.ShouldAddSequenceNumber = value;
+    }
     protected override void Dispose(bool disposing)
     {
         if (disposing)

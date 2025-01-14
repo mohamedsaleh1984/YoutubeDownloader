@@ -132,6 +132,13 @@ public partial class SettingsService()
         get => _shouldGeneratePlaylistMeta;
         set => SetProperty(ref _shouldGeneratePlaylistMeta, value);
     }
+
+    private bool _shouldAddSequenceNumber = true;
+    public bool ShouldAddSequenceNumber
+    {
+        get => _shouldAddSequenceNumber;
+        set => SetProperty(ref _shouldAddSequenceNumber, value);
+    }
 }
 
 public partial class SettingsService
