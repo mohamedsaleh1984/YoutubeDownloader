@@ -138,7 +138,8 @@ public partial class DownloadMultipleSetupViewModel(
         TimeSpan totalDuration = TimeSpan.FromSeconds(0);
         foreach (var item in vidList)
         {
-            sb.AppendLine(item.ToString());
+            string strLine = item.ToString() + "   " + item.Duration.ToString();
+            sb.AppendLine(strLine);
 
             if (item.Duration != null)
                 totalDuration += (TimeSpan)item.Duration;
