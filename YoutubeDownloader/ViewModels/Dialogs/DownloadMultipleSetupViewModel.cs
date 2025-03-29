@@ -120,12 +120,31 @@ public partial class DownloadMultipleSetupViewModel(
         Close(downloads);
     }
 
+    private long TimeSpanToSeconds( TimeSpan ts)
+    {
+        long result = 0;
+        int hoursToMins = ts.Hours * 60;
+        result = (hoursToMins * 60) + (ts.Minutes * 60) + ts.Seconds;
+        return result;
+    }
+
+    private string ConvertSecondsToTime(long totalSeconds)
+    {
+        long hours = totalSeconds / 3600;
+        long minutes = (totalSeconds % 3600) / 60;
+        long seconds = totalSeconds % 60;
+        string str = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
+        return str;
+    }
+
     private void WritePlaylistMeta(string dirPath)
     {
         string strFileName = "PlaylistInfo.txt";
         string strFilePath = Path.Combine(dirPath, strFileName);
+
         if (File.Exists(strFilePath))
             File.Delete(strFilePath);
+        
         StringBuilder sb = new StringBuilder();
         sb.AppendLine(Title == null ? "Playlist: NA" : Title.ToString());
         sb.AppendLine("Videos List: ");
@@ -135,17 +154,18 @@ public partial class DownloadMultipleSetupViewModel(
             vidList.AddRange(AvailableVideos);
         }
 
-        TimeSpan totalDuration = TimeSpan.FromSeconds(0);
+        long seconds = 0;
         foreach (var item in vidList)
         {
             string strLine = item.ToString() + "   " + item.Duration.ToString();
             sb.AppendLine(strLine);
 
             if (item.Duration != null)
-                totalDuration += (TimeSpan)item.Duration;
+                seconds += TimeSpanToSeconds(item.Duration.Value);
         }
+
         sb.AppendLine();
-        sb.AppendLine("Playlist Duration: " + totalDuration.ToString());
+        sb.AppendLine("Playlist Duration: " + ConvertSecondsToTime(seconds));
         File.WriteAllText(strFilePath, sb.ToString());
     }
 }
